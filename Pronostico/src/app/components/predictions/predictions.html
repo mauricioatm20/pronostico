@@ -1,0 +1,52 @@
+<div class="predictions-container">
+
+  <!-- Formulario para agregar partidos -->
+  <div class="add-match-form card p-3 mb-3">
+    <h3>Agregar partido</h3>
+    <div class="form-group mb-2">
+      <label>Equipo local</label>
+      <select [(ngModel)]="homeTeam" class="form-control">
+        <option value="">Selecciona equipo</option>
+        <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
+      </select>
+    </div>
+    <div class="form-group mb-2">
+      <label>Equipo visitante</label>
+      <select [(ngModel)]="awayTeam" class="form-control">
+        <option value="">Selecciona equipo</option>
+        <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" (click)="addMatch()">Agregar partido</button>
+    <button class="btn btn-secondary" (click)="clearMatches()">Limpiar</button>
+  </div>
+
+  <!-- Lista de partidos agregados -->
+  <div *ngIf="matches.length > 0" class="card p-3 mb-3">
+    <h4>Partidos agregados</h4>
+    <ul class="list-group mb-2">
+      <li class="list-group-item" *ngFor="let m of matches">{{ m.home_team }} vs {{ m.away_team }}</li>
+    </ul>
+    <button type="button" (click)="fetchPredictions()">Predecir</button>
+  </div>
+
+  <!-- Cargando -->
+ @if (loading) {
+  <div class="loading-message">Cargando predicciones...</div>
+}
+
+  <!-- Resultados -->
+  <div *ngFor="let p of predictions" class="card mt-3 results-card">
+    <div class="card-body">
+      <h4>{{ p.HomeTeam }} vs {{ p.AwayTeam }}</h4>
+      <p><strong>Predicción:</strong> {{ p.Prediccion }}</p>
+      <p><strong>Probabilidades:</strong> Local: {{ p.Prob_Victoria_local }},
+        Empate: {{ p.Prob_Empate }}, Visitante: {{ p.Prob_Victoria_visitante }}</p>
+      <p><strong>Goles Esperados:</strong> Local: {{ p.Goles_Esperados_Local }},
+        Visitante: {{ p.Goles_Esperados_Visitante }},
+        Total: {{ p.Total_Goles_Esperados }}</p>
+    </div>
+  </div>
+
+
+</div>
