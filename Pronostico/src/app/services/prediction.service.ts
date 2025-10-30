@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 export interface Match {
   home_team: string;
   away_team: string;
@@ -22,14 +23,18 @@ export interface Prediction {
 
 export class PredictionService {
   private apiUrl = 'http://localhost:8000/api/predict-multiple/'; // Ajusta según tu backend
-  private matchesUrl = 'http://localhost:8000/api/matches/latest';
+  private matchesUrl = 'http://localhost:8000/api/matches/latest/';
 
   constructor(private http: HttpClient) {}
 
   predict(matches: Match[]): Observable<{ predicciones: Prediction[] }> {
     return this.http.post<{ predicciones: Prediction[] }>(this.apiUrl, { matches });
   }
-   getLastMatches(team: string): Observable<any> {
-    return this.http.get<any>(`${this.matchesUrl}${team}/`);
+  getLastMatches(team: string): Observable<any[]> {
+    return this.http.get<{ matches: any[] }>(`${this.matchesUrl}${team}`)
+      .pipe(
+        map((response: { matches: any[] }) => response.matches) // Extraer el array matches
+
+      );
   }
 }

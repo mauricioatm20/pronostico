@@ -1,43 +1,119 @@
-.predictions-container {
-  max-width: 800px;
-  margin: 20px auto;
-  font-family: 'Arial', sans-serif;
+/* Agregar o actualizar en tu archivo CSS */
+
+.match-history {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
 }
 
-.add-match-form h3 {
-  margin-bottom: 15px;
+.team-history {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.form-group label {
-  font-weight: bold;
+.team-history h5 {
+  margin: 0 0 15px 0;
+  color: #2c3e50;
+  font-size: 16px;
+  font-weight: 600;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
 }
 
-.loading-message {
-  padding: 10px;
-  background-color: #fff3cd;
-  border: 1px solid #ffeeba;
-  border-radius: 5px;
-  text-align: center;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-.results-card {
-  border-left: 5px solid #0d6efd;
-  transition: transform 0.2s;
-}
-
-.results-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.results-card h4 {
-  color: #0d6efd;
-}
-
-.list-group-item {
+.history-item {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 8px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  font-size: 13px;
+  transition: all 0.3s;
+}
+
+.history-item:hover {
+  background: #e9ecef;
+  transform: translateX(3px);
+}
+
+.match-date {
+  color: #6c757d;
   font-weight: 500;
+  min-width: 90px;
+  font-size: 12px;
+}
+
+.match-teams {
+  flex: 1;
+  margin: 0 10px;
+  font-weight: 500;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.score {
+  font-weight: bold;
+  color: #0d6efd;
+  padding: 2px 6px;
+  background: #e7f1ff;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.match-result {
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 4px;
+  min-width: 30px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.match-result.win {
+  background: #28a745;
+  color: white;
+}
+
+.match-result.draw {
+  background: #ffc107;
+  color: white;
+}
+
+.match-result.loss {
+  background: #dc3545;
+  color: white;
+}
+
+.no-data {
+  color: #6c757d;
+  font-style: italic;
+  font-size: 14px;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  .match-history {
+    grid-template-columns: 1fr;
+  }
+
+  .history-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .match-date {
+    min-width: auto;
+  }
 }

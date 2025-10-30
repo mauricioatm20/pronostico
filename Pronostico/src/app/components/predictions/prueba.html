@@ -1,3 +1,5 @@
+
+
 <div class="predictions-container">
 
   <!-- Formulario para agregar partidos -->
@@ -47,9 +49,8 @@
         Total: {{ p.Total_Goles_Esperados }}</p>
     </div>
 
-    <!-- Últimos 5 partidos de cada equipo en dos columnas -->
+    <!-- Últimos 5 partidos de cada equipo -->
     <div class="match-history">
-      <!-- Columna Izquierda: Equipo Local -->
       <div class="team-history">
         <h5>Últimos 5 partidos de {{ p.HomeTeam }}</h5>
         <div *ngIf="getHistory(p).home.length > 0; else noHistory">
@@ -73,7 +74,6 @@
         </ng-template>
       </div>
 
-      <!-- Columna Derecha: Equipo Visitante -->
       <div class="team-history">
         <h5>Últimos 5 partidos de {{ p.AwayTeam }}</h5>
         <div *ngIf="getHistory(p).away.length > 0; else noHistoryAway">
