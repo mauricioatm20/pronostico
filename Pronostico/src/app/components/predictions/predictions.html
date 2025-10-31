@@ -1,8 +1,8 @@
 <div class="predictions-container">
 
-  <!-- Formulario para agregar partidos -->
-  <div class="add-match-form card p-3 mb-3">
+  <div class="card p-3 mb-3">
     <h3>Agregar partido</h3>
+
     <div class="form-group mb-2">
       <label>Equipo local</label>
       <select [(ngModel)]="homeTeam" class="form-control">
@@ -10,6 +10,7 @@
         <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
       </select>
     </div>
+
     <div class="form-group mb-2">
       <label>Equipo visitante</label>
       <select [(ngModel)]="awayTeam" class="form-control">
@@ -17,25 +18,26 @@
         <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
       </select>
     </div>
-    <button class="btn btn-primary" (click)="addMatch()">Agregar partido</button>
+
+    <button class="btn btn-primary me-2" (click)="addMatch()">Agregar partido</button>
     <button class="btn btn-secondary" (click)="clearMatches()">Limpiar</button>
   </div>
 
-  <!-- Lista de partidos agregados -->
   <div *ngIf="matches.length > 0" class="card p-3 mb-3">
     <h4>Partidos agregados</h4>
     <ul class="list-group mb-2">
-      <li class="list-group-item" *ngFor="let m of matches">{{ m.home_team }} vs {{ m.away_team }}</li>
+      <li class="list-group-item" *ngFor="let m of matches">
+        {{ m.home_team }} vs {{ m.away_team }}
+      </li>
     </ul>
-    <button type="button" (click)="fetchPredictions()">Predecir</button>
+    <button type="button" class="btn btn-success" (click)="fetchPredictions()">Predecir</button>
   </div>
 
-  <!-- Cargando -->
-  @if (loading) {
-    <div class="loading-message">Cargando predicciones...</div>
-  }
-
-  <!-- Resultados -->
+  <div *ngIf="loading" class="loading-message text-center my-3">
+    Cargando predicciones y últimos partidos...
+  </div>
+  
+    <!-- Resultados -->
   <div *ngFor="let p of predictions" class="card mt-3 results-card">
     <div class="card-body">
       <h4>{{ p.HomeTeam }} vs {{ p.AwayTeam }}</h4>
@@ -47,57 +49,42 @@
         Total: {{ p.Total_Goles_Esperados }}</p>
     </div>
 
-    <!-- Últimos 5 partidos de cada equipo en dos columnas -->
-    <div class="match-history">
-      <!-- Columna Izquierda: Equipo Local -->
-      <div class="team-history">
+  <div *ngFor="let p of predictions" class="card mt-3 p-3 shadow-sm">
+    <h4>{{ p.HomeTeam }} vs {{ p.AwayTeam }}</h4>
+    <p><strong>Predicción:</strong> {{ p.Prediccion }}</p>
+
+    <div class="row mt-3">
+      <div class="col-md-6">
         <h5>Últimos 5 partidos de {{ p.HomeTeam }}</h5>
-        <div *ngIf="getHistory(p).home.length > 0; else noHistory">
-          <div *ngFor="let match of getHistory(p).home" class="history-item">
-            <span class="match-date">{{ match.date }}</span>
+        <div *ngIf="getHistory(p).home.length > 0; else noHome">
+          <div *ngFor="let m of getHistory(p).home" class="history-item">
+            <span class="match-date">{{ m.date }}</span>
             <span class="match-teams">
-              {{ match.home_team }}
-              <span class="score">{{ match.home_goals }} - {{ match.away_goals }}</span>
-              {{ match.away_team }}
+              {{ m.home_team }} <span class="score">{{ m.home_goals }} - {{ m.away_goals }}</span> {{ m.away_team }}
             </span>
-            <span class="match-result"
-                  [class.win]="isWin(match, p.HomeTeam)"
-                  [class.draw]="isDraw(match)"
-                  [class.loss]="isLoss(match, p.HomeTeam)">
-              {{ getResult(match, p.HomeTeam) }}
+            <span class="match-result" [ngClass]="{'win': isWin(m,p.HomeTeam),'draw': isDraw(m),'loss': isLoss(m,p.HomeTeam)}">
+              {{ getResult(m,p.HomeTeam) }}
             </span>
           </div>
         </div>
-        <ng-template #noHistory>
-          <p class="no-data">No hay datos disponibles</p>
-        </ng-template>
+        <ng-template #noHome><p>No hay datos</p></ng-template>
       </div>
 
-      <!-- Columna Derecha: Equipo Visitante -->
-      <div class="team-history">
+      <div class="col-md-6">
         <h5>Últimos 5 partidos de {{ p.AwayTeam }}</h5>
-        <div *ngIf="getHistory(p).away.length > 0; else noHistoryAway">
-          <div *ngFor="let match of getHistory(p).away" class="history-item">
-            <span class="match-date">{{ match.date }}</span>
+        <div *ngIf="getHistory(p).away.length > 0; else noAway">
+          <div *ngFor="let m of getHistory(p).away" class="history-item">
+            <span class="match-date">{{ m.date }}</span>
             <span class="match-teams">
-              {{ match.home_team }}
-              <span class="score">{{ match.home_goals }} - {{ match.away_goals }}</span>
-              {{ match.away_team }}
+              {{ m.home_team }} <span class="score">{{ m.home_goals }} - {{ m.away_goals }}</span> {{ m.away_team }}
             </span>
-            <span class="match-result"
-                  [class.win]="isWin(match, p.AwayTeam)"
-                  [class.draw]="isDraw(match)"
-                  [class.loss]="isLoss(match, p.AwayTeam)">
-              {{ getResult(match, p.AwayTeam) }}
+            <span class="match-result" [ngClass]="{'win': isWin(m,p.AwayTeam),'draw': isDraw(m),'loss': isLoss(m,p.AwayTeam)}">
+              {{ getResult(m,p.AwayTeam) }}
             </span>
           </div>
         </div>
-        <ng-template #noHistoryAway>
-          <p class="no-data">No hay datos disponibles</p>
-        </ng-template>
+        <ng-template #noAway><p>No hay datos</p></ng-template>
       </div>
     </div>
-
   </div>
-
 </div>

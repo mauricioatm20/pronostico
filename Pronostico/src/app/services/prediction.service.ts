@@ -31,7 +31,7 @@ export class PredictionService {
     return this.http.post<{ predicciones: Prediction[] }>(this.apiUrl, { matches });
   }
   getLastMatches(team: string): Observable<any[]> {
-    return this.http.get<{ matches: any[] }>(`${this.matchesUrl}${team}`)
+    return this.http.get<{ matches: any[] }>(`${this.matchesUrl}${team}/`)
       .pipe(
         map((response: { matches: any[] }) => response.matches) // Extraer el array matches
 
